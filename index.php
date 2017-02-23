@@ -56,7 +56,7 @@ body {
                     
                     <div class="form-group">
                     <input type="text" class="form-control" name="Username" class="TField" id="Username" placeholder="Username" <?php if(isset($_SESSION['failedUsername'])){ ?>  <?php echo'value="'.$_SESSION['failedUsername'].'"'; unset($_SESSION['failedUsername']);
-                    } ?> required>
+                    } ?> required autofocus>
                     </div>
                     
                     <div class="form-group">        

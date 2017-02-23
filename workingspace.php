@@ -127,4 +127,56 @@ elseif(!empty($_POST["password"])) {
     quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
   </div>
 </div>
-HAVE THE FAITH THT THINGS WILL GET BETTTER. YOUR EXPERIENCES AND FAITH WORK HAND IN HAND. AND EVEN WHEN THINGS ARE NOT GOING THE WAY WE WOULD LIKE THEM TO GO, WE MUST STILL HAVE FAITH. AND WHEN THINGS DO GO RIGHT, WE MUST ALSO HAVE FAITH THAT THINGS ARE GONNA GET EVEN BETTER.  
+HAVE THE FAITH THT THINGS WILL GET BETTTER. YOUR EXPERIENCES AND FAITH WORK HAND IN HAND. AND EVEN WHEN THINGS ARE NOT GOING THE WAY WE WOULD LIKE THEM TO GO, WE MUST STILL HAVE FAITH. AND WHEN THINGS DO GO RIGHT, WE MUST ALSO HAVE FAITH THAT THINGS ARE GONNA GET EVEN BETTER. 
+
+
+<script>
+$(document).ready(
+    function selected(){
+        $('input:file').change(
+            function(){
+                if ($(this).val()) {
+                    $('input:submit').attr('disabled',false);
+                    // or, as has been pointed out elsewhere:
+                    // $('input:submit').removeAttr('disabled'); 
+                } 
+            }
+            );
+    });</script>
+
+html
+
+<form action="#" method="post">
+    <input type="file" name="fileInput" id="fileInput" />
+    <input type="submit" value="submit" disabled />
+</form>
+<div id="result"></div>
+
+echo "Welcome $names!";
+$compname = $subformat_$subgame_$subname_$subseason;
+
+echo '<script type="text/javascript">$(document).ready( function(){ $("#quote a").load("display.php?timm='. $tizz .'"); } ); </script>';
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>load demo</title>
+  <style>
+  body {
+    font-size: 12px;
+    font-family: Arial;
+  }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+ 
+<b>Projects:</b>
+<ol id="new-projects"></ol>
+ 
+<script>
+$( "#new-projects" ).load( "/resources/load.html #projects li" );
+</script>
+ 
+</body>
+</html>
