@@ -111,6 +111,8 @@ body {
 }
 
     </style>
+<script type="text/javascript" src="bootstrap-3.3.6-dist/js/jquery-2.2.2.min.js"></script>
+<script type="text/javascript" src="bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="site-wrapper">
@@ -128,7 +130,7 @@ body {
                 <div class=" text-center text-danger" >Fields marked * are compulsory</div>
                 
                 <?php if(isset($_SESSION['Error'])){?>
-                <span class="alert alert-danger pull-right" role="alert" >
+                <span class="alert alert-danger fade in alert-dismissable pull-right" role="alert" ><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Error:</span><?php echo
                 $_SESSION['Error'];
                                                     

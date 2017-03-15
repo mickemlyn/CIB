@@ -233,71 +233,19 @@ $(document).ready(
                 <!--APA-->
         <div id="div1">
                 <div class="col-sm-3">
-                 <table class="table table-hover table-condensed  table-responsive" id="usernametable">
-                    <tr><th>Username</th></tr>
-                     
-                    <tr><td><?php echo $_SESSION['user'];?> 
-                    <a class="a" href="#" title="Edit" data-toggle="collapse" data-target="#chiniyamaji"><span class="glyphicon glyphicon-edit pull-right" aria-hidden="true"> Edit</span></a>    
-                    </td></tr>
-                     
-                    <tr id="chiniyamaji" <?php if(isset($_SESSION['UsernameExistsError'])){ echo ""; } else{ echo 'class = "collapse"'; } ?> ><td>
-                    <form action="adminprofileeditor.php" method="post" class="form-inline">
-                    <div class="form-group <?php if(isset($_SESSION['UsernameExistsError'])){ echo "has-error"; } else{ echo ""; }?> ">
-                        <input type="text" class="form-control" name="newUsername" id="newUsername" placeholder="Enter New Username" <?php if(isset($_SESSION['UsernameYouEntered'])){ echo'value="'.$_SESSION['UsernameYouEntered'].'"'; } ?> required></div>
-                <?php if(isset($_SESSION['UsernameExistsError'])){?>
-                <br>
-                        <div class="text-danger">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Error:</span><?php echo
-                $_SESSION['UsernameExistsError']; } ?></div>
-                    <button type="submit" name="submitnewusername" class="btn btn-default btn-sm">SUBMIT</button>
-                   <?php if(isset($_SESSION['UsernameExistsError'])){ ?>
-                        <a href="cancel_profileedit.php" title="Cancel" name="cancel" class="btn btn-info btn-sm pull-right">QUIT</a> <?php }?>
-                    </form>
-                   </td></tr>
+                 <table class="table table-hover table-condensed  table-responsive" >
+                    <tr> <th>Username</th></tr>
+                    <tr> <td><?php echo $_SESSION['user'];?></td></tr>
                     </table>
-                    
                     <table class="table table-hover table-condensed  table-responsive" >
                     <tr> <th>Email</th></tr>
-                    <tr><td> <?php echo $_SESSION['myemail']; ?>
-                        <a class="b" href="#" title="Edit" data-toggle="collapse" data-target="#dl"><span class="glyphicon glyphicon-edit pull-right" aria-hidden="true"> Edit</span></a>
-                        </td></tr>
-                        
-                         <tr id="dl" <?php if(isset($_SESSION['EmailExistsError'])){ echo ""; } else{ echo 'class = "collapse"'; } ?> ><td>
-                    <form action="adminprofileeditor.php" method="post" class="form-inline">
-                    <div class="form-group <?php if(isset($_SESSION['EmailExistsError'])){ echo "has-error"; } else{ echo ""; }?> ">
-                        <input type="email" class="form-control" name="newEmail" id="newEmail" placeholder="Enter New Email Adress" <?php if(isset($_SESSION['EmailYouEntered'])){ echo'value="'.$_SESSION['EmailYouEntered'].'"'; } ?> required></div>
-                <?php if(isset($_SESSION['EmailExistsError'])){?>
-                <br>
-                <div class="text-danger">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Error:</span><?php echo
-                $_SESSION['EmailExistsError']; } ?></div>
-                <button type="submit" name="submitnewEmail" class="btn btn-default btn-sm">Submit</button>
-                <?php if(isset($_SESSION['EmailExistsError'])){ ?>
-                        <a href="cancel_profileedit.php" title="Cancel" name="cancel" class="btn btn-info btn-sm pull-right">QUIT</a> <?php }?>
-                    </form>
-                   </td></tr>
-                        
+                    <tr><td> mickemalonza@cib.co.ke</td></tr>
                     </table>
                 </div>
                 <div class="col-sm-3">
             <table class="table table-hover table-condensed  table-responsive" >
                 <tr ><th>Phone</th></tr>
-                <tr><td><?php echo $_SESSION['myphone']; ?>
-             <a class="c" href="#" title="Edit" data-toggle="collapse" data-target="#phone"><span class="glyphicon glyphicon-pencil pull-right" aria-hidden="true"> Edit</span></a>  
-                </td></tr>
-                 <tr id="phone" <?php if(isset($_SESSION['phoneError'])){ echo ""; } else{ echo 'class = "collapse"'; } ?> ><td>
-                <form action="adminprofileeditor.php" method="post">
-                <div class="form-group <?php if(isset($_SESSION['phoneError'])){ echo "has-error"; } else{ echo ""; }?> ">
-                <input type="text" class="form-control phone" name="newPhone" id="newPhone" maxlength="13" placeholder="Enter Phone Number" <?php if(isset($_SESSION['PhoneYouEntered'])){ echo'value="'.$_SESSION['PhoneYouEntered'].'"'; } else { echo'value="+254"'; } ?> required></div>
-                <?php if(isset($_SESSION['phoneError'])){?> <br>
-                <div class="text-danger">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Phone Error:</span><?php echo
-                $_SESSION['phoneError']; } ?></div>
-                <button type="submit" name="submitnewPhone" id="submitnewPhone" class="btn btn-default btn-sm ph" disabled>Submit</button>
-                <?php if(isset($_SESSION['phoneError'])){ ?>
-                <a href="cancel_profileedit.php" title="Cancel" name="cancel" class="btn btn-info btn-sm pull-right">QUIT</a> <?php }?>
-                </form>
-                   </td></tr>
+                <tr><td>+254710533607</td></tr>
             </table>
                     
         <table class="table table-hover table-condensed  table-responsive" >
@@ -333,38 +281,8 @@ $(document).ready(
       </div>
       <div id="uploads" class="uploads">Uploaded file will appear here: <a href="adminprofile.php" class="btn btn-default pull-right" role="button">Cancel</a></div>
       
-<script>
-$(document).ready(function(){
-  $("#chiniyamaji").on("hide.bs.collapse", function(){
-    $(".a").html('<span class="glyphicon glyphicon-edit pull-right"> Edit</span>');
-  });
-  $("#chiniyamaji").on("show.bs.collapse", function(){
-    $(".a").html('<span class="glyphicon glyphicon-collapse-up pull-right"> Close</span>');
-  });
-});
-</script>
-<script>
-$(document).ready(function(){
-  $("#dl").on("hide.bs.collapse", function(){
-    $(".b").html('<span class="glyphicon glyphicon-edit pull-right"> Edit</span>');
-  });
-  $("#dl").on("show.bs.collapse", function(){
-    $(".b").html('<span class="glyphicon glyphicon-collapse-up pull-right"> Close</span>');
-  });
-});
-</script> 
-  <script>
-$(document).ready(function(){
-  $("#phone").on("hide.bs.collapse", function(){
-    $(".c").html('<span class="glyphicon glyphicon-pencil pull-right"> Edit</span>');
-  });
-  $("#phone").on("show.bs.collapse", function(){
-    $(".c").html('<span class="glyphicon glyphicon-collapse-up pull-right"> Close</span>');
-  });
-});
-</script>
-
-<script>  document.getElementById('submit').addEventListener('click',function(e){
+      <script>
+      document.getElementById('submit').addEventListener('click',function(e){
           e.preventDefault();
           var f = document.getElementById('file'),
               pb = document.getElementById('pb'),
@@ -459,6 +377,7 @@ $(document).ready(function(){
         </div>
       </footer>
  </div><!-- /.container -->
+
 <script type="text/javascript">
 $('#triggerButton').click(function(e){
     e.preventDefault();
@@ -467,27 +386,19 @@ $('#triggerButton').click(function(e){
     });
 });
     
+// create the back to top button
+$('body').prepend('<a href="#" class="back-to-top">Back to Top</a>');
+var amountScrolled = 300;
+$(window).scroll(function() {
+	if ( $(window).scrollTop() > amountScrolled ) { $('a.back-to-top').fadeIn('slow'); } 
+    else { $('a.back-to-top').fadeOut('slow'); } });
 
-var readOnlyLength = $('#newPhone').val().length;
-
-$('#newPhone').on('keypress, keydown', function(event) {
-    if ((event.which != 37 && (event.which != 39))
-        && ((this.selectionStart < readOnlyLength)
-        || ((this.selectionStart == readOnlyLength) && (event.which == 8)))) {
-        return false;
-    }
+$('a.back-to-top, a.simple-back-to-top').click(function() {
+	$('html, body').animate({ scrollTop: 0 }, 700);
+	return false;
 });
-    
-$("#newPhone").on('keyup',function(){
-  var regEx = /^[+-]?\d+$/;  
- if(($(this).val().length > 12) && (regEx.test($(this).val()))){
-            $('.ph').attr('disabled', false); }           
-        else{
-            $('.ph').attr('disabled',true);}    
-});
-    
 </script>
- 
+  
 </body>
 </html>
 <?php }

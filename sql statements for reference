@@ -1,0 +1,2 @@
+ALTER TABLE `users` ADD `phone` VARCHAR(30) NOT NULL DEFAULT 'You have not Added Your Phone' AFTER `signupDate`;
+UPDATE `users` SET `profileChange` = NULL, `lastLogin` = NULL, `phone` = '+254729161266' WHERE `users`.`userId` = 4;

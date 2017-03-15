@@ -95,9 +95,6 @@ a:hover.back-to-top {
 
 
         </style>
-    <script type="text/javascript">
-    $('#myCarousel').carousel();
-    </script>
     
     </head>
   

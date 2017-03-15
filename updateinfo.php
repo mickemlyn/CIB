@@ -272,11 +272,8 @@ a:hover.back-to-top {
                 <?php if(isset($_SESSION['Error'])){?>
                 <span class="alert alert-danger" role="alert" >
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Error:</span><?php echo
-                $_SESSION['Error'];
-                                                    
-                } 
-                   ?></span>  
-                    </div>
+                $_SESSION['Error']; } ?>
+                </span> </div>
   
                     <div class="form-group form-inline <?php if(isset($_SESSION['PasswordError'])){ echo "has-error"; } else{ echo ""; }?> ">     
                     <input type="password" class="form-control TField" name="Password" id="Password" placeholder="Password" min="4"  > <span for="Password" class="text-center text-warning">Fill only if you would like to change the current password </span>     </div>

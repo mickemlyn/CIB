@@ -22,7 +22,8 @@ session_start();
           $table_password = $row['password']; // the first password row is passed on to $table_password, and so on until the query is finished
             $userlevel = $row['userLevel'];
            $profilepic = $row['profilePic'];
-           
+           $email = $row['email'];
+           $phone = $row['phone'];
        }
        if(($username == $table_username) && ($pass == $table_password))// checks if there are any matching fields
        {
@@ -30,6 +31,8 @@ session_start();
           { 
              $_SESSION['user'] = $table_username;
               $_SESSION['profilePic'] = $profilepic;
+              $_SESSION['myemail'] = $email;
+              $_SESSION['myphone'] = $phone;
               $_SESSION['LAST_ACTIVITY'] = time();
               $lastLogin = mysqli_query($conn,"UPDATE users SET lastLogin = CURRENT_TIMESTAMP WHERE username = '{$_SESSION['user']}'");
               
