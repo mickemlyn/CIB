@@ -59,7 +59,7 @@ else{
    $_SESSION['EmailYouEntered'] = $newEmail;     
     } 
     else{
-      $useridQuery = mysqli_query($conn,"Select userId from users WHERE BINARY email ='{$_SESSION['myemail']}'");
+      $useridQuery = mysqli_query($conn,"Select userId from users WHERE BINARY username ='{$_SESSION['user']}'");
     $row = mysqli_fetch_assoc($useridQuery);
     $userid =$row['userId'];
     
@@ -76,6 +76,46 @@ else{
     }
 }
 // Email
-
+// phone  number
+if(isset($_POST['submitnewPhone'])){
+    $newphoneNumber = ($_POST['newPhone']);
+    $pattern = '/^[+-]?\d+$/';
+if((!preg_match($pattern, $newphoneNumber )) && (strlen($newphoneNumber)!=13)) {
+     $_SESSION['phoneError'] = "Invalid Phone number format!S";
+     $_SESSION['PhoneYouEntered'] = $newphoneNumber ;   
+     header("location: adminprofile.php"); 
+     
+    }
+elseif($newphoneNumber == $_SESSION['myphone']){
+    $_SESSION['phoneError'] = "This is your Current Phone!";
+     $_SESSION['PhoneYouEntered'] = $newphoneNumber;
+     header("location: adminprofile.php"); 
+    exit();
+        }
+else{
+    $q = mysqli_query($conn,"Select phone from users WHERE phone ='$newphoneNumber'");
+    $exists = mysqli_num_rows($q); 
+    if($exists > 0 && $newphoneNumber != $_SESSION['myphone'] ){
+   $_SESSION['phoneError'] = "This Phone Number Exists !"; 
+   $_SESSION['PhoneYouEntered'] = $newphoneNumber;     
+    } 
+    else{
+      $useridQuery = mysqli_query($conn,"Select userId from users WHERE BINARY username ='{$_SESSION['user']}'");
+    $row = mysqli_fetch_assoc($useridQuery);
+    $userid =$row['userId'];
+    
+     $sql = "UPDATE users SET phone = '$newphoneNumber' , profileChange = CURRENT_TIMESTAMP WHERE userId = '$userid'";   
+     $sqlExec=mysqli_query($conn,$sql); 
+     $_SESSION['myphone'] = $newphoneNumber;
+            
+    if(isset($_SESSION['phoneError'])){ unset($_SESSION['phoneError']);
+    unset($_SESSION['PhoneYouEntered']);
+                                           }  
+    }
+    header("location: adminprofile.php");
+ exit();
+    }
+}
+// Phone number
 
 ?>

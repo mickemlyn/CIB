@@ -12,6 +12,11 @@ if(isset($_SESSION['EmailExistsError'])){
 if(isset($_SESSION['EmailYouEntered'])){
  unset($_SESSION['EmailYouEntered']);   
 }
+if(isset($_SESSION['phoneError'])){
+ unset($_SESSION['phoneError']);   
+}if(isset($_SESSION['PhoneYouEntered'])){
+ unset($_SESSION['PhoneYouEntered']);   
+}
 
     header("location: adminprofile.php"); exit();
 ?>

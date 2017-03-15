@@ -289,7 +289,7 @@ $(document).ready(
                 <form action="adminprofileeditor.php" method="post">
                 <div class="form-group <?php if(isset($_SESSION['phoneError'])){ echo "has-error"; } else{ echo ""; }?> ">
                 <input type="text" class="form-control phone" name="newPhone" id="newPhone" maxlength="13" placeholder="Enter Phone Number" <?php if(isset($_SESSION['PhoneYouEntered'])){ echo'value="'.$_SESSION['PhoneYouEntered'].'"'; } else { echo'value="+254"'; } ?> required></div>
-                <?php if(isset($_SESSION['phoneError'])){?> <br>
+                <?php if(isset($_SESSION['phoneError'])){?>
                 <div class="text-danger">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Phone Error:</span><?php echo
                 $_SESSION['phoneError']; } ?></div>
@@ -468,7 +468,7 @@ $('#triggerButton').click(function(e){
 });
     
 
-var readOnlyLength = $('#newPhone').val().length;
+var readOnlyLength = 4;
 
 $('#newPhone').on('keypress, keydown', function(event) {
     if ((event.which != 37 && (event.which != 39))
