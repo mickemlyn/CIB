@@ -301,15 +301,50 @@ $(document).ready(
             </table>
                     
         <table class="table table-hover table-condensed  table-responsive" >
-            <tr><th>Office</th></tr>
-            <tr><td>3733 </td></tr>
+            <tr><th>Office <span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span></th></tr>
+            <tr><td><?php echo $_SESSION['myline']; ?>
+            <a class="d" href="#" title="Edit" data-toggle="collapse" data-target="#simu"><span class="glyphicon glyphicon-pencil pull-right" aria-hidden="true"> Edit</span></a></td></tr>
+            
+            <tr id="simu" <?php if(isset($_SESSION['lineError'])){ echo ""; } else{ echo 'class = "collapse"'; } ?> ><td>
+                <form action="adminprofileeditor.php" method="post" class="form-inline">
+                <div class="input-group col-xs-6 <?php if(isset($_SESSION['lineError'])){ echo "has-error"; } else{ echo ""; }?> ">
+                <input type="text" class="form-control" name="newSimu" id="newSimu" maxlength="5" placeholder="Office line" <?php if(isset($_SESSION['LineYouEntered'])){ echo'value="'.$_SESSION['LineYouEntered'].'"'; } ?> required></div>
+                <?php if(isset($_SESSION['lineError'])){?>
+                <div class="text-danger">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only"> Error:</span><?php echo $_SESSION['lineError']; } ?> </div>
+                <button type="submit" name="submitnewSimu" id="submitnewSimu" class="btn btn-default btn-sm ll" disabled>Submit</button>
+                <?php if(isset($_SESSION['lineError'])){ ?>
+                <a href="cancel_profileedit.php" title="Cancel" name="cancel" class="btn btn-info btn-sm pull-right">QUIT</a> <?php }?>
+                </form>
+                   </td></tr>
+            
             </table>
               </div>
         <div class="col-sm-3">
         <table class="table table-hover table-condensed  table-responsive" >
          <tr><th>Branch</th></tr>
-         <tr><td>Capital Branch</td></tr>
-        </table>           
+         <tr><td><?php echo $_SESSION['mybranch']; ?>
+            <a class="e" href="#" title="Edit" data-toggle="collapse" data-target="#branch"><span class="glyphicon glyphicon-pencil pull-right" aria-hidden="true"> Edit</span></a>   
+         </td></tr>
+            <tr id="branch" <?php if(isset($_SESSION['branchError'])){ echo ""; } else{ echo 'class = "collapse"'; } ?> ><td>
+            <form action="adminprofileeditor.php" method="post" class="form-inline">
+             <div class="input-group col-xs-8">
+              <select class="form-control" id="branches" name="branches" >
+                <option <?php if(!isset($_SESSION['BranchYouEntered'])){ echo "selected"; } ?> disabled >Select Branch</option>
+                <option value="Capital Branch" <?php if(isset($_SESSION['BranchYouEntered']) && $_SESSION['BranchYouEntered'] == "Capital Branch" ){ echo "selected"; } ?> >Capital Branch</option>
+                <option value="Elite Branch" <?php if(isset($_SESSION['BranchYouEntered']) && $_SESSION['BranchYouEntered'] == "Elite Branch" ){ echo "selected"; } ?> >Elite Branch</option>
+                <option value="Head Office" <?php if(isset($_SESSION['BranchYouEntered']) && $_SESSION['BranchYouEntered'] == "Head Office" ){ echo "selected"; } ?> >Head Office</option>
+                <option value="UpperValley Branch" <?php if(isset($_SESSION['BranchYouEntered']) && $_SESSION['BranchYouEntered'] == "UpperValley Branch" ){ echo "selected"; } ?> >UpperValley Branch</option>  
+              </select>
+            </div>
+            <?php if(isset($_SESSION['branchError'])){?>
+            <div class="text-danger">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only"> Error:</span><?php echo $_SESSION['branchError']; } ?> </div>
+            <button type="submit" name="submitBranch" id="submitBranch" class="btn btn-default btn-sm br" disabled>Submit</button>
+            <?php if(isset($_SESSION['branchError'])){ ?>
+            <a href="cancel_profileedit.php" title="Cancel" name="cancel" class="btn btn-info btn-sm pull-right">QUIT</a> <?php }?>
+            </form></td></tr>
+        </table>
         <table class="table table-hover table-condensed  table-responsive" >
             <tr><th>Bio</th></tr>
             <tr><td> Some personal info comes here. Your Job post and stuff </td></tr>
@@ -363,7 +398,26 @@ $(document).ready(function(){
   });
 });
 </script>
-
+  <script>
+$(document).ready(function(){
+  $("#simu").on("hide.bs.collapse", function(){
+    $(".d").html('<span class="glyphicon glyphicon-pencil pull-right"> Edit</span>');
+  });
+  $("#simu").on("show.bs.collapse", function(){
+    $(".d").html('<span class="glyphicon glyphicon-collapse-up pull-right"> Close</span>');
+  });
+});
+</script>
+ <script>
+$(document).ready(function(){
+  $("#branch").on("hide.bs.collapse", function(){
+    $(".e").html('<span class="glyphicon glyphicon-pencil pull-right"> Edit</span>');
+  });
+  $("#branch").on("show.bs.collapse", function(){
+    $(".e").html('<span class="glyphicon glyphicon-collapse-up pull-right"> Close</span>');   
+  });
+});
+</script>
 <script>  document.getElementById('submit').addEventListener('click',function(e){
           e.preventDefault();
           var f = document.getElementById('file'),
@@ -485,6 +539,23 @@ $("#newPhone").on('keyup',function(){
         else{
             $('.ph').attr('disabled',true);}    
 });
+   
+$("#newSimu").on('keyup',function(){
+  var numregEx = /^\d+$/;  
+ if(($(this).val().length >3 && $(this).val().length <=5) && (numregEx.test($(this).val()))){
+    $('.ll').attr('disabled', false); }           
+  else{
+    $('.ll').attr('disabled',true);}    
+});
+
+$( "select" ).change(function() {
+ $( "select option:selected" ).each(function() {
+      if( $( this ).text() != "Select Branch" ){
+      $('.br').attr('disabled', false);    
+      }
+     else{ $('.br').attr('disabled',true); }
+    });
+    }).trigger( "change" );
     
 </script>
  

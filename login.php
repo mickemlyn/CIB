@@ -24,17 +24,21 @@ session_start();
            $profilepic = $row['profilePic'];
            $email = $row['email'];
            $phone = $row['phone'];
+           $office = $row['office'];
+           $branch = $row['branch'];
        }
        if(($username == $table_username) && ($pass == $table_password))// checks if there are any matching fields
        {
           if($pass == $table_password)
           { 
              $_SESSION['user'] = $table_username;
-              $_SESSION['profilePic'] = $profilepic;
-              $_SESSION['myemail'] = $email;
-              $_SESSION['myphone'] = $phone;
-              $_SESSION['LAST_ACTIVITY'] = time();
-              $lastLogin = mysqli_query($conn,"UPDATE users SET lastLogin = CURRENT_TIMESTAMP WHERE username = '{$_SESSION['user']}'");
+             $_SESSION['profilePic'] = $profilepic;
+             $_SESSION['myemail'] = $email;
+             $_SESSION['myphone'] = $phone;
+             $_SESSION['myline'] = $office;
+             $_SESSION['mybranch'] = $branch;
+             $_SESSION['LAST_ACTIVITY'] = time();
+             $lastLogin = mysqli_query($conn,"UPDATE users SET lastLogin = CURRENT_TIMESTAMP WHERE username = '{$_SESSION['user']}'");
               
               if(isset($_SESSION['loginError']) || isset($_SESSION['failedUsername'] )){
                  unset($_SESSION['loginError']);

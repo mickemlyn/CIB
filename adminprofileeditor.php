@@ -81,7 +81,7 @@ if(isset($_POST['submitnewPhone'])){
     $newphoneNumber = ($_POST['newPhone']);
     $pattern = '/^[+-]?\d+$/';
 if((!preg_match($pattern, $newphoneNumber )) && (strlen($newphoneNumber)!=13)) {
-     $_SESSION['phoneError'] = "Invalid Phone number format!S";
+     $_SESSION['phoneError'] = "Invalid Phone number format!";
      $_SESSION['PhoneYouEntered'] = $newphoneNumber ;   
      header("location: adminprofile.php"); 
      
@@ -117,5 +117,68 @@ else{
     }
 }
 // Phone number
-
+// Office Line
+if(isset($_POST['submitnewSimu'])){
+    $newLine = ($_POST['newSimu']);
+if((!filter_var($newLine, FILTER_VALIDATE_INT )) || (strlen($newLine)<3) && (strlen($newLine)>5)){
+     $_SESSION['lineError'] = "Invalid Office Line !";
+     $_SESSION['LineYouEntered'] = $newLine;   
+     header("location: adminprofile.php"); 
+     
+    }
+elseif($newLine == $_SESSION['myline']){
+    $_SESSION['lineError'] = "This is your Current Line!";
+     $_SESSION['LineYouEntered'] = $newLine;
+     header("location: adminprofile.php"); 
+    exit();
+        }
+else{
+    $q = mysqli_query($conn,"Select office from users WHERE office ='$newLine'");
+    $exists = mysqli_num_rows($q); 
+    if($exists > 0 && $newLine != $_SESSION['myline'] ){
+   $_SESSION['lineError'] = "This Office Line Exists !"; 
+   $_SESSION['LineYouEntered'] = $newLine;     
+    } 
+    else{
+      $useridQuery = mysqli_query($conn,"Select userId from users WHERE BINARY username ='{$_SESSION['user']}'");
+    $row = mysqli_fetch_assoc($useridQuery);
+    $userid =$row['userId'];
+    
+     $sql = "UPDATE users SET office = '$newLine' , profileChange = CURRENT_TIMESTAMP WHERE userId = '$userid'";   
+     $sqlExec=mysqli_query($conn,$sql); 
+     $_SESSION['myline'] = $newLine;
+            
+    if(isset($_SESSION['lineError'])){ unset($_SESSION['lineError']);
+    unset($_SESSION['lineYouEntered']);
+                                           }  
+    }
+    header("location: adminprofile.php");
+ exit();
+    }
+}
+// Office line
+// Branch
+if(isset($_POST['submitBranch'])){
+    $branch = $_POST['branches'];   
+if($branch == $_SESSION['mybranch']){
+    $_SESSION['branchError'] = "This is your Current Branch!";
+     $_SESSION['BranchYouEntered'] = $branch;
+     header("location: adminprofile.php"); 
+    exit();
+        }
+    else{
+      $useridQuery = mysqli_query($conn,"Select userId from users WHERE BINARY username ='{$_SESSION['user']}'");
+    $row = mysqli_fetch_assoc($useridQuery);
+    $userid =$row['userId'];
+    
+     $sql = "UPDATE users SET branch = '$branch' , profileChange = CURRENT_TIMESTAMP WHERE userId = '$userid'";   
+     $sqlExec=mysqli_query($conn,$sql); 
+     $_SESSION['mybranch'] = $branch;
+            
+    if(isset($_SESSION['branchError'])){ unset($_SESSION['branchError']);
+    unset($_SESSION['BranchYouEntered']); }  
+    header("location: adminprofile.php"); exit();
+    }
+}
+// Branch
 ?>
