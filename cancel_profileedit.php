@@ -20,6 +20,10 @@ if(isset($_SESSION['branchError'])){
  unset($_SESSION['branchError']);   
  unset($_SESSION['BranchYouEntered']);   
 }
+if(isset($_SESSION['bioError'])){
+ unset($_SESSION['bioError']);   
+ unset($_SESSION['BioYouEntered']);   
+}
 
 header("location: adminprofile.php"); exit();
 ?>

@@ -297,9 +297,7 @@ if($("#newPhone").val().length > 5){
             $('.ph').attr('disabled', false); }           
         else{
             $('.ph').attr('disabled',true);} 
-    
-    
-    
+  
   var regEx = /^[+-]?\d+$/;
 if (regEx.test($("#textBoxID").val()) { 
       // validated ok
@@ -307,15 +305,25 @@ if (regEx.test($("#textBoxID").val()) {
       // didn't validate ok
 }
   
+ 
+$("#title").focus(function() {
+    console.log('in');
+}).blur(function() {
+    console.log('out');
+});    
+    
+    $("#newpassword").on('keyup',function()
     
     
     
     
-    
-    
-    
-    
-    
+    $( "#confirmpassword" ).focusout(function() {
+  if(($(this).val() == $("#newpassword").val() ) && $("#currentpassword").val().length !=0 ){
+    $('#submitpassword').attr('disabled', false); } 
+    else{
+     $('#submitpassword').attr('disabled', true);   
+    } 
+  }).trigger( "focusout" );
     
     
     

@@ -181,4 +181,29 @@ if($branch == $_SESSION['mybranch']){
     }
 }
 // Branch
+// Bio
+if(isset($_POST['submitBio'])){
+    $bio = filter_var($_POST['textbio'], FILTER_SANITIZE_STRING);
+if($bio == $_SESSION['mybio']){
+    $_SESSION['bioError'] = "No Changes!";
+     $_SESSION['BioYouEntered'] = $bio;
+     header("location: adminprofile.php"); 
+    exit();
+        }
+    else{
+      $useridQuery = mysqli_query($conn,"Select userId from users WHERE BINARY username ='{$_SESSION['user']}'");
+    $row = mysqli_fetch_assoc($useridQuery);
+    $userid =$row['userId'];
+    
+     $sql = "UPDATE users SET bio = '$bio' , profileChange = CURRENT_TIMESTAMP WHERE userId = '$userid'";   
+     $sqlExec=mysqli_query($conn,$sql); 
+     $_SESSION['mybio'] = $bio;
+            
+    if(isset($_SESSION['bioError'])){ unset($_SESSION['bioError']);
+    unset($_SESSION['BioYouEntered']); }  
+    header("location: adminprofile.php"); exit();
+    }
+}
+// Bio
+
 ?>

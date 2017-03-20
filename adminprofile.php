@@ -192,7 +192,7 @@ $(document).ready(
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <a href="#">Image</a>
   <a href="#">Username</a>
-  <a href="#">Edit Password</a>
+  <a href="adminpassordeditor.php">Edit Password</a>
   <a href="#">Email</a>
   <a href="#">Phone</a>
   <a href="#">Bio</a>
@@ -206,10 +206,10 @@ $(document).ready(
                 <p class="lead text-muted"> Profile Picture</p> </div>
                  <div class="col-sm-9">
                      <ol class="breadcrumb">
-                        <li class="active"><a href="#">Profile Pic</a></li>
+                        <li class="active"><a href="#" id="triggerlink" title="change profile picture">Profile Pic</a></li>
                         <li><a href="#">Email</a></li>
                         <li><a href="#">Phone</a></li>
-                        <li><a href="#">Password</a></li> 
+                        <li><a href="adminpassordeditor.php">Password</a></li> 
                         <li class="active">Bio</a></li>
                       </ol>
                         </div>
@@ -243,7 +243,7 @@ $(document).ready(
                     <tr id="chiniyamaji" <?php if(isset($_SESSION['UsernameExistsError'])){ echo ""; } else{ echo 'class = "collapse"'; } ?> ><td>
                     <form action="adminprofileeditor.php" method="post" class="form-inline">
                     <div class="form-group <?php if(isset($_SESSION['UsernameExistsError'])){ echo "has-error"; } else{ echo ""; }?> ">
-                        <input type="text" class="form-control" name="newUsername" id="newUsername" placeholder="Enter New Username" <?php if(isset($_SESSION['UsernameYouEntered'])){ echo'value="'.$_SESSION['UsernameYouEntered'].'"'; } ?> required></div>
+                    <input type="text" class="form-control" name="newUsername" id="newUsername" placeholder="Enter New Username" <?php if(isset($_SESSION['UsernameYouEntered'])){ echo'value="'.$_SESSION['UsernameYouEntered'].'"'; } ?> required></div>
                 <?php if(isset($_SESSION['UsernameExistsError'])){?>
                 <br>
                         <div class="text-danger">
@@ -346,14 +346,44 @@ $(document).ready(
             </form></td></tr>
         </table>
         <table class="table table-hover table-condensed  table-responsive" >
-            <tr><th>Bio</th></tr>
-            <tr><td> Some personal info comes here. Your Job post and stuff </td></tr>
+            <tr><th colspan="2">Bio</th></tr>
+            <tr><td><?php if($_SESSION['mybio'] == null ){ echo "Some personal info comes here. Your Job post and stuff... Click To Add"; } else{ echo $_SESSION['mybio']; } ?> </td>
+                <td><a  href="#" class="f" title="Edit" data-toggle="collapse" data-target="#bio"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>  </td></tr>
+            <tr id="bio" <?php if(isset($_SESSION['bioError'])){ echo ""; } else{ echo 'class = "collapse"'; } ?> >
+               <td><div class="panel panel-default"> 
+                
+            <form action="adminprofileeditor.php" method="post">
+                 <div class="form-input <?php if(isset($_SESSION['bioError'])){ echo "has-error"; } ?> ">
+                <textarea class="form-control" rows="4" maxlength="140" id="textbio" name="textbio" placeholder="Enter Some Personal Info (Less than 140 characters)"><?php if(isset($_SESSION['BioYouEntered'])){ echo $_SESSION['BioYouEntered']; } ?></textarea>
+                </div>
+               <div class="panel-footer bg-success" style="padding:2px;">
+               <button type="submit" name="submitBio" id="submitBio" class="btn btn-success btn-sm biob" disabled>Submit</button> 
+                 <div class="text-success pull-right"> <span id="charsleft"></span> Characters left</div>
+                   
+                   
+                <?php if(isset($_SESSION['bioError'])){?>
+            <div class="text-danger">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only"> Error:</span><?php echo $_SESSION['bioError']; ?>
+            <a href="cancel_profileedit.php" title="Cancel" name="cancel" class=" pull-right lead"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></a>
+            </div>
+            <?php } ?>    
+                
+            
+            
+            
+            
+                   </form>    
+                    </div></div>
+                    
+                
+                    </td></div>
+            </tr>
             </table>    
         </div>
      <!--APA--> </div>
         
     <!--div ya pili-->
-    <div id="div2" style="display: none">
+    <div id="div2" style="display: none" >
     <div class="col-sm-9">   
         <form action="upload.php" method="post" enctype="multipart/form-data" id="upload" class="form-group upload">
         <fieldset>
@@ -418,8 +448,17 @@ $(document).ready(function(){
   });
 });
 </script>
-<script>  document.getElementById('submit').addEventListener('click',function(e){
-          e.preventDefault();
+ <script>
+$(document).ready(function(){
+  $("#bio").on("hide.bs.collapse", function(){
+    $(".f").html('<span class="glyphicon glyphicon-pencil pull-right"></span>');
+  });
+  $("#bio").on("show.bs.collapse", function(){
+    $(".f").html('<span class="glyphicon glyphicon-collapse-up pull-right"></span>');   
+  });
+});
+</script>
+<script> document.getElementById('submit').addEventListener('click',function(e){      e.preventDefault();
           var f = document.getElementById('file'),
               pb = document.getElementById('pb'),
               pt = document.getElementById('pt');
@@ -520,16 +559,20 @@ $('#triggerButton').click(function(e){
         $('#div2').fadeIn('fast');
     });
 });
-    
-
+   
+$('#triggerlink').click(function(e){
+    e.preventDefault();
+    $('#div1').fadeOut('fast', function(){
+        $('#div2').fadeIn('fast');
+    });
+});
+       
 var readOnlyLength = 4;
-
 $('#newPhone').on('keypress, keydown', function(event) {
     if ((event.which != 37 && (event.which != 39))
         && ((this.selectionStart < readOnlyLength)
         || ((this.selectionStart == readOnlyLength) && (event.which == 8)))) {
-        return false;
-    }
+        return false; }
 });
     
 $("#newPhone").on('keyup',function(){
@@ -556,7 +599,15 @@ $( "select" ).change(function() {
      else{ $('.br').attr('disabled',true); }
     });
     }).trigger( "change" );
-    
+   
+$("#textbio").on('keyup',function(){ 
+    var chars = (140 - ($(this).val().length) );
+$("#charsleft").text( chars);
+ if(($(this).val().length >0) && ($(this).val().length < 141 )){  
+    $('.biob').attr('disabled', false); }           
+  else{
+    $('.biob').attr('disabled',true);}    
+});
 </script>
  
 </body>

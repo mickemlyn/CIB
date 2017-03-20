@@ -26,6 +26,7 @@ session_start();
            $phone = $row['phone'];
            $office = $row['office'];
            $branch = $row['branch'];
+           $bio = $row['bio'];
        }
        if(($username == $table_username) && ($pass == $table_password))// checks if there are any matching fields
        {
@@ -37,6 +38,7 @@ session_start();
              $_SESSION['myphone'] = $phone;
              $_SESSION['myline'] = $office;
              $_SESSION['mybranch'] = $branch;
+            $_SESSION['mybio'] = $bio;
              $_SESSION['LAST_ACTIVITY'] = time();
              $lastLogin = mysqli_query($conn,"UPDATE users SET lastLogin = CURRENT_TIMESTAMP WHERE username = '{$_SESSION['user']}'");
               
