@@ -231,7 +231,7 @@ a:hover.back-to-top {
                    <a href="viewusers.php">Delete User</a>
                     </div>     
                </li> 
-               <li><a href="#contact">Profile</a></li>
+               <li><a href="adminprofile.php">Profile</a></li>
                <li><a href="#contact">Performance</a></li>
                <li><a href="#contact">Reports</a></li>
                <li><a href="logout.php" title="LogOut"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></li>
@@ -248,7 +248,7 @@ a:hover.back-to-top {
         <div class="row">
             <div class="col-sm-8"><h2  class="lead text-center" ><b>ADMIN  - USER INFORMATION </b></h2></div>
             <div class="col-sm-4" >
-            <h6  class="lead pull-right" ><b ><small style="color: white;"> <span class="glyphicon glyphicon-user" aria-hidden="true" style="font-size:40px;"></span>  <?php 
+            <h6  class="lead pull-right" ><b ><small style="color: white;"> <img src="<?php echo $_SESSION['profilePic'] ?>" class="img-rounded" style="height:45px;">  <?php 
                 echo $_SESSION['user']; 
 	 ?></small></b></h6> 
             </div>

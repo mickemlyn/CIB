@@ -46,8 +46,7 @@ if (isset($_SESSION['user']) && (time() - $_SESSION['LAST_ACTIVITY'] < 900))
                 if(isset($_SESSION['PasswordError'])){ unset($_SESSION['PasswordError']);}
             
                 if(isset($_SESSION['UsernameExistsError'])){
-                  unset($_SESSION['UsernameExistsError']);  
-                }
+                  unset($_SESSION['UsernameExistsError']); }
                 header("location: adduserform.php");
             }  
             elseif(strlen($Pw) < '6'){

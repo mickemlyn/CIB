@@ -59,7 +59,7 @@ if(isset($_SESSION['newpasswordError'])){
 if(isset($_SESSION['confirmpasswordError'])){
  unset($_SESSION['confirmpasswordError']);}
     
- //header("location: adminpassordeditor.php"); exit();   
+header("location: adminprofile.php"); exit();   
 }  
 }}
  ?>
@@ -227,19 +227,20 @@ $(document).ready(
         <div class="row">
             <div class="col-sm-8"><h2  class="lead text-center" ><b>ADMIN PROFILE</b></h2></div>
             <div class="col-sm-4" >
-            <h6  class="lead pull-right" ><b ><small style="color: white;"> <span class="glyphicon glyphicon-user" aria-hidden="true" style="font-size:40px;"></span><?php echo $_SESSION['user']; ?></small></b></h6> 
+            <h6  class="lead pull-right" ><b ><small style="color: white;"> <img src="<?php echo $_SESSION['profilePic'] ?>" class="img-rounded" style="height:45px;"><?php echo $_SESSION['user']; ?></small></b></h6> 
             </div>
            <?php if(isset($_SESSION['PasswordChangeSuccess'])){ ?> <div class="absolute text-center" id="successfade">
             <div class="alert alert-success alert-dismissable" >
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
           <strong>Success!</strong> Your Password has been Changed
-        </div></div><?php } ?>
+        </div></div><?php } unset($_SESSION['PasswordChangeSuccess']) ?>
         </div>
 
 <!-- Use any element to open the sidenav -->
 <span style="font-size: 20px;"> <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span> Change Password</span>
 <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
             <div class="well">
+                
                 <div class="row"> <div class="col-sm-3">
                 <p class="lead text-muted"> Profile Picture</p> </div>
                  <div class="col-sm-9">

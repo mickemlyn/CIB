@@ -123,7 +123,7 @@ a:hover.back-to-top {
                     <a href="#" class="dropdown">Users <span class="caret"></span> </a>
                <div class="dropdown-content">
                     <a href="adduserform.php" target="_blank">Add User</a>
-                    <a href="viewusers.php">View Users</a>
+                    <a href="#">View Users</a>
                     <a href="#">Update Info</a>
                    <a href="#">Delete User</a>
                     </div>     
@@ -145,7 +145,7 @@ a:hover.back-to-top {
         <div class="row">
             <div class="col-sm-8"><h2  class="lead text-center" ><b>ADMIN  - USER INFORMATION </b></h2></div>
             <div class="col-sm-4" >
-            <h6  class="lead pull-right" ><b ><small style="color: white;"> <span class="glyphicon glyphicon-user" aria-hidden="true" style="font-size:40px;"></span>  <?php 
+            <h6  class="lead pull-right" ><b ><small style="color: white;"> <img src="<?php echo $_SESSION['profilePic'] ?>" class="img-rounded" style="height:45px;">  <?php 
                 echo $_SESSION['user']; include('connections.php');
 	  $sql="SELECT userId, username, userLevel, email, fName, lName FROM users ORDER BY userLevel ASC, signupDate ASC";
 	  $row=mysqli_query($conn,$sql) or die (mysqli_error($conn));
@@ -153,7 +153,7 @@ a:hover.back-to-top {
             </div>
             </div>
             
-                <div class="well" style="color:black;">
+        <div class="well" style="color:black;">
         <table class="table table-hover table-condensed table-bordered table-responsive" >
         <tr class="success lead">
         <th></t> <small> USER_ID </small></th>

@@ -12,8 +12,6 @@ if (isset($_SESSION['user']) && (time() - $_SESSION['LAST_ACTIVITY'] < 900))
     <title>Admin Profile</title>
   <link href="bootstrap-3.3.6-dist/css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
   <link href="bootstrap-3.3.6-dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
- 
-    
   <link href="navbar.css" rel="stylesheet">
   <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css" >
   <link rel="stylesheet" href="sidenav/sidenav.css" >
@@ -27,24 +25,6 @@ if (isset($_SESSION['user']) && (time() - $_SESSION['LAST_ACTIVITY'] < 900))
   <script src="upload.js"></script>
     
 <style type="text/css">
-   
-     a.back-to-top {
-	display: none;
-	width: 50px;
-	height: 50px;
-	text-indent: -9999px;
-	position: fixed;
-	z-index: 999;
-	right: 20px;
-	bottom: 20px;
-	background: #27AE61 url("up-arrow.png") no-repeat center 43%;
-	-webkit-border-radius: 30px;
-	-moz-border-radius: 30px;
-	border-radius: 30px;
-}
-a:hover.back-to-top {
-	background-color: #000;
-}
 
 .content{
         height: auto;
@@ -107,6 +87,13 @@ a:hover.back-to-top {
         cursor: inherit;
         display: block;
     }
+    /*absolute div - suuccessfade*/
+    div.absolute {
+    position: absolute;
+    width: 550px;
+    margin: auto;
+     left: 42%;
+}
  </style>
 <script src="sidenav/sidenav.js"></script>
 <script>// hover menu over image 
@@ -185,8 +172,14 @@ $(document).ready(
         <div class="row">
             <div class="col-sm-8"><h2  class="lead text-center" ><b>ADMIN PROFILE</b></h2></div>
             <div class="col-sm-4" >
-            <h6  class="lead pull-right" ><b ><small style="color: white;"> <span class="glyphicon glyphicon-user" aria-hidden="true" style="font-size:40px;"></span><?php echo $_SESSION['user']; ?></small></b></h6> 
-            </div> </div>
+            <h6  class="lead pull-right" ><b ><small style="color: white;"> <img src="<?php echo $_SESSION['profilePic'] ?>" class="img-rounded" style="height:45px;"><?php echo $_SESSION['user']; ?></small></b></h6> 
+            </div> 
+           <?php if(isset($_SESSION['PasswordChangeSuccess'])){ ?> <div class="absolute text-center" id="successfade">
+            <div class="alert alert-success alert-dismissable" >
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>Success!</strong> Your Password has been Changed
+        </div></div><?php } unset($_SESSION['PasswordChangeSuccess']) ?>            
+            </div>
   <!-- side nav menu-->
  <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -350,8 +343,7 @@ $(document).ready(
             <tr><td><?php if($_SESSION['mybio'] == null ){ echo "Some personal info comes here. Your Job post and stuff... Click To Add"; } else{ echo $_SESSION['mybio']; } ?> </td>
                 <td><a  href="#" class="f" title="Edit" data-toggle="collapse" data-target="#bio"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>  </td></tr>
             <tr id="bio" <?php if(isset($_SESSION['bioError'])){ echo ""; } else{ echo 'class = "collapse"'; } ?> >
-               <td><div class="panel panel-default"> 
-                
+               <td><div class="panel panel-default">    
             <form action="adminprofileeditor.php" method="post">
                  <div class="form-input <?php if(isset($_SESSION['bioError'])){ echo "has-error"; } ?> ">
                 <textarea class="form-control" rows="4" maxlength="140" id="textbio" name="textbio" placeholder="Enter Some Personal Info (Less than 140 characters)"><?php if(isset($_SESSION['BioYouEntered'])){ echo $_SESSION['BioYouEntered']; } ?></textarea>
@@ -359,24 +351,13 @@ $(document).ready(
                <div class="panel-footer bg-success" style="padding:2px;">
                <button type="submit" name="submitBio" id="submitBio" class="btn btn-success btn-sm biob" disabled>Submit</button> 
                  <div class="text-success pull-right"> <span id="charsleft"></span> Characters left</div>
-                   
-                   
+  
                 <?php if(isset($_SESSION['bioError'])){?>
             <div class="text-danger">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only"> Error:</span><?php echo $_SESSION['bioError']; ?>
             <a href="cancel_profileedit.php" title="Cancel" name="cancel" class=" pull-right lead"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></a>
             </div>
-            <?php } ?>    
-                
-            
-            
-            
-            
-                   </form>    
-                    </div></div>
-                    
-                
-                    </td></div>
+            <?php } ?></form></div></div></td></div>
             </tr>
             </table>    
         </div>
@@ -397,7 +378,15 @@ $(document).ready(
       <span class="bar-fill-text" id="pt"></span></span>
       </div>
       <div id="uploads" class="uploads">Uploaded file will appear here: <a href="adminprofile.php" class="btn btn-default pull-right" role="button">Cancel</a></div>
-      
+ <script>
+ $(document).ready (function(){ 
+     $("#successfade").hide().fadeIn('normal');
+   $("#successfade").fadeTo(4000, 500).slideUp("slow", function(){
+    $("#successfade").slideUp("slow");
+                });   
+            });
+
+</script>     
 <script>
 $(document).ready(function(){
   $("#chiniyamaji").on("hide.bs.collapse", function(){
@@ -513,10 +502,7 @@ $(document).ready(function(){
           },
               error:function(){
                   console.log('Not working');
-              }
-          }
-          
-          );
+              } } );
       });
 </script>
   </form>    

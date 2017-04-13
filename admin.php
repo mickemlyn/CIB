@@ -149,8 +149,7 @@ a:hover.back-to-top {
         <div class="row">
             <div class="col-sm-8"><h2  class="lead text-center" ><b>ADMIN HOME PAGE</b></h2></div>
             <div class="col-sm-4" >
-            <h6  class="lead pull-right" ><b ><small style="color: white;"> Logged in as <?php 
-                echo $_SESSION['user']; ?></small></b></h6>
+            <h6  class="lead pull-right" ><b ><small style="color: white;"> <img src="<?php echo $_SESSION['profilePic'] ?>" class="img-rounded" style="height:45px;"><?php echo $_SESSION['user']; ?></small></b></h6> 
             </div>
             </div>
             <div class="row">

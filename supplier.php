@@ -1,79 +1,38 @@
+<?php
+session_start();
+if (isset($_SESSION['user']) && (time() - $_SESSION['LAST_ACTIVITY'] < 900))
+   // last request was less than 15 minutes ago 
+    {
+   $_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
+ ?>
 <! doctype html>
 <html>   
 <head>
-    <title>CAPITAL INVESTMENTS BANK</title>
-    <script src="bootstrap-3.3.6-dist/js/jquery-2.2.2.min.js"></script>
+    <title>CIB SUPPLIER</title>
+    
   <link href="bootstrap-3.3.6-dist/css/bootstrap-theme.css" rel="stylesheet" type="text/css"/>
+    
     <link href="bootstrap-3.3.6-dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
-    <link href="bootstrap-3.3.6-dist/css/carousel.css" rel="stylesheet" type="text/css"/>
+    
     <link href="navbar.css" rel="stylesheet">
     <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css" >
-<link href="slideshow.css" rel="stylesheet">
-     <script src="slideshow.js"></script>
+
     
 <style type="text/css">
-        body {
-   
-}
-    .fa:hover{
-        cursor: pointer;
-        color: red;      
-    }  
-    
-    a.back-to-top {
-	display: none;
-	width: 50px;
-	height: 50px;
-	text-indent: -9999px;
-	position: fixed;
-	z-index: 999;
-	right: 20px;
-	bottom: 20px;
-	background: #27AE61 url("up-arrow.png") no-repeat center 43%;
-	-webkit-border-radius: 30px;
-	-moz-border-radius: 30px;
-	border-radius: 30px;
-}
-a:hover.back-to-top {
-	background-color: #000;
-}
 
 .content{
     
         height: auto;
+    color: white;
     background-color:#083B4C;
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGUlEQVQ4y2NgoBJwoJAedcGoC0ZdMOAuAABF0hABJ/8lyQAAAABJRU5ErkJggg==);
   background-attachment: fixed;
+    padding-top: 30px;
     }
-.content1{
     
-        height: 300px;
-    
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGUlEQVQ4y2NgoBJwoJAedcGoC0ZdMOAuAABF0hABJ/8lyQAAAABJRU5ErkJggg==);
-  background-attachment: fixed;
-    }
 
-.content .transbox{
-    padding-top: 0px;
-        height: auto; /* For IE8 and earlier */
-    background-color: #4169E1;
-    color: white;
-}
-    .content2 .transbox{
-    padding-top: 0px;
-        height: auto; /* For IE8 and earlier */
-    color: white;
-}
-    
-    .content3 .transbox{
-    padding-top: 0px;
-        height: auto; /* For IE8 and earlier */
-    background-color: black;
-    color: white;
-}
- .hov:hover{
-    border:5px solid #fd0000;
-}
+ .hovv:hover{
+     border:5px solid #fd0000;}
  .hov1:hover{
     border:5px solid #36b44a;
 }
@@ -83,21 +42,43 @@ a:hover.back-to-top {
  .hov3:hover{
     border:5px solid #ffff00;
 }
-.content1 .transbox{
-    padding-top: 50px;
-        height: 480px; /* For IE8 and earlier */
+
+ 
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
 }
-        </style>
-    <script type="text/javascript">
-    $('#myCarousel').carousel();
-    </script>
-    
-    </head>
-  
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    padding: 12px 12px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+</style>    
+</head>
 <body>
    
-<nav class="navbar  navbar-fixed-top " style="background-color:white; color:black;">
-      <div class="container">
+<nav class="navbar  navbar-fixed-top " style="background-color:white;">
          <div class="col-xs-4">  
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -115,29 +96,39 @@ a:hover.back-to-top {
            <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home </a></li>
                 <li ><a href="#about"> Orders </a></li>
-               <li><a href="#">Store</a></li>
-                <li><a href="#spec">Contracts</a></li>
-               <li><a href="#contact">Profile</a></li>
-               
-               <li><a href="#contact">Reports</a></li>
-               <li><a href="#contact">Feedback</a></li>
-               <li><a href="#contact">Logout</a></li>
-               <li><a href="#contact">Help</a></li>
+               <li class="dropdown">
+                <a href="#" class="dropdown">Store<span class="caret"></span> </a>
+               <div class="dropdown-content">
+                <a href="#">View Store</a>
+                <a href="additems.php">Add Items</a>
+               <a href="#">Availability</a>
+               <a href="categories.php">Categorization</a></div>  
+               </li>
+               <li><a href="#">Contracts</a></li> 
+               <li><a href="#">Profile</a></li>
+               <li><a href="#">Reports</a></li>
+               <li><a href="#">Feedback</a></li>
+               <li><a href="logout.php" title="LogOut"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></li>
+               <li><a href="#">Help</a></li>
             </ul>
         </div>
          </div>
           
               <!--/.navbar-collapse -->
-      </div>  
+        
         </nav>
     
     
-    <div class="content" id="spec"><div class="transbox">
+    <div class="content" id="spec">
         <div class="container" style="background-color: rgba(255, 255, 255, 0.3)">
         <div class="row">
-            <h2  class="lead text-center" style="padding-top: 30px;"><b>SUPPLIER HOME PAGE</b></h2>
-            <p class="lead text-center" style="padding-bottom: 20px;"><small>Accurate and efficient solutions on:</small></p>
-            <div class="col-sm-3"><center><img src="media/Computer-Security-Icon.png" height="100" width="100" class="img-circle hov"></center>
+            <div class="col-sm-8"><h2  class="lead text-center" ><b>SUPPLIER HOME PAGE</b></h2></div>
+            <div class="col-sm-4" >
+            <h6  class="lead pull-right" ><b ><small style="color: white;"> <img src="<?php echo $_SESSION['profilePic'] ?>" class="img-rounded" style="height:45px;"> <?php echo $_SESSION['user']; ?></small></b></h6> 
+            </div>
+            </div>
+            <div class="row">
+            <div class="col-sm-3"><center><img src="media/Computer-Security-Icon.png" height="100" width="100" class="img-circle hovv"></center>
             <br><p class="lead text-center">Cyber Security</p>
                 <p class="text-justify">
                     We will make sure your staff has security systems and processes in place that they need. We will test your infastructure and your processes so you can be sure you're well prepared and monitor your key systems, website and network to ensure your data is safe. 
@@ -170,7 +161,7 @@ a:hover.back-to-top {
                 </p><hr>
             </div>
         </div>
-        </div></div>
+        </div>
     </div>
     
     
@@ -233,3 +224,13 @@ $('a.back-to-top, a.simple-back-to-top').click(function() {
 
 </body>
 </html>
+<?php }
+else{
+    unset($_SESSION['user']);
+    unset($_SESSION['LAST_ACTIVITY']);
+    
+  $_SESSION['notloggederror'] = "Kindly log in to proceed!";
+    header("location: index.php");
+    exit();
+}
+?>
