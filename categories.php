@@ -141,7 +141,7 @@ padding-top: 30px;
     margin: auto;
      left: 42%;
 }
-</style>    
+</style>
 </head>
 <body>
    
@@ -166,7 +166,7 @@ padding-top: 30px;
                <li class="dropdown">
                 <a href="#" class="dropdown">Store<span class="caret"></span> </a>
                <div class="dropdown-content">
-                <a href="#">View Store</a>
+                <a href="store.php">View Store</a>
                 <a href="additems.php">Add Items</a>
                <a href="#">Availability</a>
                <a href="#">Categories</a></div>     
@@ -196,7 +196,7 @@ padding-top: 30px;
            <?php if(isset($_SESSION['newcatsuccess'])){ ?> <div class="absolute text-center" id="successfade">
             <div class="alert alert-success alert-dismissable" >
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>Success!</strong><?php echo $_SESSION['newcatsuccess'];?>
+          <strong>Success! </strong><?php echo $_SESSION['newcatsuccess'];?>
         </div></div><?php } unset($_SESSION['newcatsuccess']) ?>            
             </div>
             <div class="well text-muted"><div class="row">
@@ -226,7 +226,7 @@ padding-top: 30px;
     <th class="text-center"><small> ACTION </small> </th>
     </tr>
     <?php
-    $sql="SELECT catid, cat FROM itemcategories ORDER BY catid ASC";
+    $sql="SELECT catid, cat FROM itemcategories ORDER BY cat ASC";
     $row=mysqli_query($conn,$sql) or die (mysqli_error($conn));
 
     while($data=mysqli_fetch_array($row))
@@ -236,13 +236,13 @@ padding-top: 30px;
     <td><?php echo $data["catid"]; ?></td>
     <td><?php echo $data["cat"]; ?></td>
 
-    <?php echo "<td><a onClick=\"javascript: return confirm('Please confirm deletion');\" href='deletecat.php?catid=".$data["catid"]."' title='Delete User'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></a></td><tr>";?>
+    <?php echo "<td><a onClick=\"javascript: return confirm('Please confirm deletion');\" href='deletecat.php?catid=".$data["catid"]."' title='Delete'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></a></td><tr>";?>
     </tr>
     <?php
     } ?> </table>
     </div>
 
-    <p class="w3-button w3-block w3-dark-grey">&copy; Capital Investments Bank</p>
+    <p class="w3-button w3-block w3-dark-grey">&copy; Capital Investments Bank Supplier</p>
 
     </div>
                 </div>
@@ -279,7 +279,7 @@ padding-top: 30px;
     <div class="w3-container">
     <table class="table table-hover table-condensed" >
     <tr class="success">
-    <th></t> <small> SubCategory ID </small></th>
+    <th></t> <small>ID </small></th>
     <th> <small> SubCategory </small></th>
     <th> <small> Category </small></th>
     <th class="text-center"><small> ACTION </small> </th>
@@ -291,12 +291,12 @@ padding-top: 30px;
     while($data=mysqli_fetch_array($row))
     {
     ?>
-    <tr>
+    <tr class="small">
     <td><?php echo $data["subcatid"]; ?></td>
     <td><?php echo $data["subcat"]; ?></td>
      <td><?php echo $data["itemcategory"]; ?></td>
 
-    <?php echo "<td><a onClick=\"javascript: return confirm('Please confirm deletion');\" href='deletecat.php?subcatid=".$data["subcatid"]."' title='Delete User'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></a></td><tr>";?>
+    <?php echo "<td><a onClick=\"javascript: return confirm('Please confirm deletion');\" href='deletecat.php?subcatid=".$data["subcatid"]."' title='Delete'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></a></td><tr>";?>
     </tr>
     <?php
     } ?> </table>
@@ -405,7 +405,7 @@ $( "select" ).change(function() {
 </script>
 </body>
 </html>
-<?php mysqli_close(conn); }
+<?php mysqli_close($conn); }
 else{
     unset($_SESSION['user']);
     unset($_SESSION['LAST_ACTIVITY']);

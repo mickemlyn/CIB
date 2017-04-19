@@ -5,14 +5,87 @@ if (isset($_SESSION['user']) && (time() - $_SESSION['LAST_ACTIVITY'] < 900))
    // last request was less than 15 minutes ago 
     {
    $_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
+    //WALIOKO HATUWATAKI, WANAOTAKA HATUWAAMINI - ANN MED CITY
 if(isset($_POST['submitNewItem'])){
-        $name = ($_POST['itemName']);
-        $price = ($_POST['price']);
-        $itemDescription=$_POST['itemDescription'];
-        $FName=$_POST['Fname'];
-        $LName=$_POST['Lname'];
+    $name = ($_POST['itemName']);
+    $itemDescription=$_POST['itemDescription'];
+    $itemCategory=$_POST['category'];
+    $itemSubCategory=$_POST['subcategory'];  
+    $itemBrand=$_POST['brand'];
+    $price = ($_POST['price']);
+    $image = $_SESSION['ItemPicBackend'];
+
+ //if u cyah manage the war, stay outta fight  
+//check if item exists
+    $q = mysqli_query($conn,"Select itemName from items WHERE itemName='$name'");
+    $exists = mysqli_num_rows($q); 
+if($exists > 0){
+    $_SESSION['ItemError'] = "This Item exists !";
+    $_SESSION['ItemYouEntered'] = $name;
+    $_SESSION['ItemDescriptionYouEntered'] = $itemDescription;
+    $_SESSION['CatYouEntered'] = $itemCategory;
+    $_SESSION['PriceYouEntered'] = $price;
+    $_SESSION['BrandYouEntered'] = $itemBrand;
+    $_SESSION['currentItemPic'] = $_SESSION['ItemPicBackend'];
+    /*if(isset($_SESSION['EmailError'])){ unset($_SESSION['EmailError']);}
+
+    if(isset($_SESSION['PasswordError'])){ unset($_SESSION['PasswordError']);*/
+    header("location: additems.php"); exit();
+
+}    
+    elseif(strlen($itemDescription) > '300'){
+    $_SESSION['itemDescriptionError'] = "Item Descriprion Too Long!";
+    $_SESSION['ItemYouEntered'] = $name;
+    $_SESSION['ItemDescriptionYouEntered'] = $itemDescription;
+    $_SESSION['CatYouEntered'] = $itemCategory;
+    $_SESSION['PriceYouEntered'] = $price;
+    $_SESSION['BrandYouEntered'] = $itemBrand;
+    $_SESSION['currentItemPic'] = $_SESSION['ItemPicBackend'];
+    header("location: additems.php"); exit();  
+    }
+  
+    elseif((strlen($itemBrand) > '19') && (!preg_match("/^[a-zA-Z&-\s]*$/",$itemBrand))){
+    $_SESSION['itemBrandError'] = "Invalid Brand Name!";
+    $_SESSION['ItemYouEntered'] = $name;
+    $_SESSION['ItemDescriptionYouEntered'] = $itemDescription;
+    $_SESSION['CatYouEntered'] = $itemCategory;
+    $_SESSION['PriceYouEntered'] = $price;
+    $_SESSION['BrandYouEntered'] = $itemBrand;
+    $_SESSION['currentItemPic'] = $_SESSION['ItemPicBackend'];
+    header("location: additems.php"); exit();  
+    }
+    
+   elseif(($price < 15) && (!is_numeric($price))){
+    $_SESSION['itemPriceError'] = "Incorrect Item Pricing!";
+    $_SESSION['ItemYouEntered'] = $name;
+    $_SESSION['ItemDescriptionYouEntered'] = $itemDescription;
+    $_SESSION['CatYouEntered'] = $itemCategory;
+    $_SESSION['PriceYouEntered'] = $price;
+    $_SESSION['BrandYouEntered'] = $itemBrand;
+    $_SESSION['currentItemPic'] = $_SESSION['ItemPicBackend'];
+    header("location: additems.php"); exit();  
+    }
+    
+    else{
+    $dbItemDescription = htmlspecialchars($itemDescription);
+$sql="INSERT INTO items (itemName, description, price, itemCategory, subCategory, model, itemImage) VALUES('{$name}','{$dbItemDescription}','{$price}','{$itemCategory}','{$itemSubCategory}','{$itemBrand}','{$_SESSION['ItemPicBackend']}')";
+$sqlExec=mysqli_query($conn,$sql);
+$_SESSION['newitemsuccess'] = "New Item - ".$name." Added";
+
+ if(isset($_SESSION['itemDescriptionError'])){ unset($_SESSION['itemDescriptionError']);}
+ if(isset($_SESSION['ItemError'])){ unset($_SESSION['ItemError']);}
+ if(isset($_SESSION['ItemYouEntered'])){ unset($_SESSION['ItemYouEntered']);}
+ if(isset($_SESSION['itemPriceError'])){ unset($_SESSION['itemPriceError']);}
+ if(isset($_SESSION['ItemDescriptionYouEntered'])){ unset($_SESSION['ItemDescriptionYouEntered']);}
+ if(isset($_SESSION['CatYouEntered'])){ unset($_SESSION['CatYouEntered']);}
+ if(isset($_SESSION['PriceYouEntered'])){ unset($_SESSION['PriceYouEntered']);}
+ if(isset($_SESSION['BrandYouEntered'])){ unset($_SESSION['BrandYouEntered']);}
+ if(isset($_SESSION['itemBrandError'])){ unset($_SESSION['itemBrandError']);}
+ if(isset($_SESSION['ItemPicBackend'])){ unset($_SESSION['ItemPicBackend']);}
+   
+    }  
+
 }
-         
  ?>
 <! doctype html>
 <html>   
@@ -85,6 +158,13 @@ padding-top: 30px;
         cursor: inherit;
         display: block;
     }
+    div.absolute {
+    position: absolute;
+    width: 550px;
+    margin: auto;
+     left: 42%;
+}
+
 </style>    
 </head>
 <body>
@@ -110,7 +190,7 @@ padding-top: 30px;
                <li class="dropdown">
                 <a href="#" class="dropdown">Store<span class="caret"></span> </a>
                <div class="dropdown-content">
-                <a href="#">View Store</a>
+                <a href="store.php">View Store</a>
                 <a href="#">Add Items</a>
                <a href="#">Availability</a>
                <a href="categories.php">Categorization</a></div>     
@@ -123,13 +203,9 @@ padding-top: 30px;
                <li><a href="#">Help</a></li>
             </ul>
         </div>
-         </div>
-          
+         </div>  
               <!--/.navbar-collapse -->
-        
         </nav>
-    
-    
     <div class="content" id="spec">
         <div class="container" style="background-color: rgba(255, 255, 255, 0.3)">
         <div class="row">
@@ -137,89 +213,102 @@ padding-top: 30px;
         <div class="col-sm-4" >
         <h6  class="lead pull-right" ><b ><small style="color: white;"> <img src="<?php echo $_SESSION['profilePic'] ?>" class="img-rounded" style="height:45px;"> <?php echo $_SESSION['user']; ?></small></b></h6> 
         </div>
+    <?php if(isset($_SESSION['newitemsuccess'])){ ?> <div class="absolute text-center" id="successfade">
+    <div class="alert alert-success alert-dismissable" >
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Success! </strong><?php echo $_SESSION['newitemsuccess'];?>
+    </div></div><?php } unset($_SESSION['newitemsuccess']) ?>       
+            
         </div>
             <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-sm-10">
             <div class="panel panel-info">
             <div class="panel-heading text-center lead">Add New Item</div>
-            <div class="panel-body">
-              <p class="text-center text-muted">Your Password Must be Atleast 6 characters( Atleast 1 Number and letters)</p>
+            <div class="panel-body text-muted">
+            <p class="text-center">All fields are required. Item Names should be well Descriptive.</p>
+<div class="row">
+<div class="col-sm-6"> 
 <form id="AddItemsForm" method="post" name="AddItemsForm" role="form" class="form-horizontal form-inline" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-<div class="row" style="margin-bottom:10px;">
- <div class="col-xs-6">
-                 <div class="input-group col-xs-12 <?php if(isset($_SESSION['CurrentPassYouEntered'])){ echo "has-error"; }?>"><span class="input-group-addon">Item Name</span>
-                <input class="form-control" type="text" name="itemName" id="itemName" placeholder="Enter Item Name" <?php if(isset($_SESSION['CurrentPassYouEntered'])){ echo'value="'.$_SESSION['CurrentPassYouEntered'].'"'; } ?> required> </div>
-                <?php if(isset($_SESSION['CurrentPassYouEntered'])){?><div class="text-danger shida"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Item Name Error:</span><?php echo $_SESSION['passwordError'] ;?></div><?php }  ?>        </div>
- <div class="col-xs-6">
-                <div class="input-group col-xs-7 <?php if(isset($_SESSION['CurrentPassYouEntered'])){ echo "has-error"; }?>"><span class="input-group-addon">Price( KES)</span>
-                <input class="form-control" type="number" name="price" id="price" min="10" max="1000001" placeholder="Item Price In Kshs" <?php if(isset($_SESSION['CurrentPassYouEntered'])){ echo'value="'.$_SESSION['CurrentPassYouEntered'].'"'; } ?> required></div>
-                <?php if(isset($_SESSION['CurrentPassYouEntered'])){?><div class="text-danger shida"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Price Error:</span><?php echo $_SESSION['passwordError'] ;?></div><?php }  ?>
-</div></div>
- <div class="row" style="margin-bottom:6px;">
-    <div class="col-xs-6">
-                <div class="panel panel-default">
-                <textarea style="min-width: 100%" class="form-control" rows="4" name="itemDescription" id="itemDescription" placeholder="Enter Detailed Item Description( Less than 300 characters)"><?php if(isset($_SESSION['BioYouEntered'])){ echo $_SESSION['BioYouEntered']; } ?></textarea>
-                <div class="panel-footer bg-success"> 
-                <div class="text-success"> <span id="charsleft">300</span> Characters left</div>
-                </div></div>
+     <div style="margin-bottom:10px;"> <div class="input-group col-xs-12 <?php if(isset($_SESSION['ItemError'])){ echo "has-error"; }?>"><span class="input-group-addon">Item Name</span>
+    <input class="form-control" type="text" name="itemName" id="itemName" maxlength="50" placeholder="Enter Item Name" <?php if(isset($_SESSION['ItemYouEntered'])){ echo'value="'.$_SESSION['ItemYouEntered'].'"'; } ?> required> </div>
+    <?php if(isset($_SESSION['ItemError'])){?><div class="text-danger shida"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Item Name Error:</span><?php echo $_SESSION['ItemError'] ;?></div><?php }  ?>  </div>
+    
+    <div style="margin-bottom:10px;">
+    <div class="panel panel-default">
+    <div class="input-group col-xs-12 <?php if(isset($_SESSION['itemDescriptionError'])){ echo "has-error"; }?>">
+        <textarea style="min-width: 100%" class="form-control" rows="4" name="itemDescription" id="itemDescription" maxlength="300" placeholder="Enter Detailed Item Description( Less than 300 characters)"><?php if(isset($_SESSION['ItemDescriptionYouEntered'])){ echo $_SESSION['ItemDescriptionYouEntered']; } ?></textarea></div>
+    <div class="panel-footer bg-success"> 
+    <div class="text-success"> <span id="charsleft"></span> Characters left</div>
+    </div></div>
+    <?php if(isset($_SESSION['itemDescriptionError'])){?><div class="text-danger shida"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Item Name Error:</span><?php echo $_SESSION['itemDescriptionError'] ;?></div><?php }  ?>  
     </div>
-    <div class="col-xs-6">
-                <div class="input-group col-xs-10" style="margin-bottom:10px;"><span class="input-group-addon">Item Category</span>
-                <select class="form-control" id="category" name="category" >
-                <option selected disabled >Select Category</option>
-                <?php 
-                $sql="SELECT cat FROM itemcategories ORDER BY cat ASC";
-                $row=mysqli_query($conn,$sql) or die (mysqli_error($conn));
-                while($data=mysqli_fetch_array($row)){
-                ?>
-                <option value="<?php echo $data["cat"]; ?>"><?php echo $data["cat"]; ?></option> <?php } ?>       
-
-                </select> </div>
-                
-                 <div class="input-group col-xs-10" style="margin-bottom:10px;"><span class="input-group-addon">Item SubCategory</span>
-                 <select class="form-control" id="subcat" name="subcat" >
-                <option disabled selected>Select SubCategory</option>
-                <option value="Bookends">Bookends</option>
-                <option value="Card Holders">Card Holders</option>
-                <option value="Desk Mats" >Desk Mats</option>
-                <option value="Drawer Sets">Drawer Sets</option>
-                <option value="Letter Trays">Letter Trays</option>
-                <option value="Office Bins">Office Bins</option><option value="Trimmers">Trimmers</option>  
-              </select> </div> 
-                    
-                <div class="input-group col-xs-10 <?php if(isset($_SESSION['CurrentPassYouEntered'])){ echo "has-error"; }?>"><span class="input-group-addon">Model/Brand</span>
-                <input class="form-control" type="text" name="brand" id="brand" placeholder="Enter Item Brand or Model" <?php if(isset($_SESSION['CurrentPassYouEntered'])){ echo'value="'.$_SESSION['CurrentPassYouEntered'].'"'; } ?> required> </div>
+    
+    <div style="margin-bottom:10px;">
+    <div class="input-group col-xs-10" style="margin-bottom:10px;"><span class="input-group-addon">Item Category</span>
+    <select class="form-control" id="category" name="category" required>
+    <option selected disabled value="">Select Category</option>
+    <?php 
+    $sql="SELECT cat FROM itemcategories ORDER BY cat ASC";
+    $row=mysqli_query($conn,$sql) or die (mysqli_error($conn));
+    while($data=mysqli_fetch_array($row)){ ?>
+    <option value="<?php echo $data["cat"]; ?>" <?php if(isset($_SESSION['CatYouEntered']) && $_SESSION['CatYouEntered'] == $data["cat"] ){ echo "selected"; } ?> ><?php echo $data["cat"]; ?></option> <?php } ?>       
+    </select> </div>
     </div>
+    
+    <div style="margin-bottom:10px;">
+    <div class="input-group col-xs-10" style="margin-bottom:10px;"><span class="input-group-addon">Item SubCategory</span>
+     <select class="form-control action" id="subcategory" name="subcategory" required>
+    <option disabled selected value="">Select SubCategory</option> </select> </div> 
+    </div>
+        
+    <div style="margin-bottom:10px;">
+    <div class="input-group col-xs-10 <?php if(isset($_SESSION['itemBrandError'])){ echo "has-error"; }?>"><span class="input-group-addon">Model/Brand</span>
+    <input class="form-control" type="text" name="brand" id="brand"  maxlength="19" placeholder="Enter Item Brand or Model" <?php if(isset($_SESSION['BrandYouEntered'])){ echo'value="'.$_SESSION['BrandYouEntered'].'"'; } ?> required> </div>
+    <?php if(isset($_SESSION['itemBrandError'])){?><div class="text-danger shida"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Price Error:</span><?php echo $_SESSION['itemBrandError'] ;?></div><?php }  ?>
+    </div>
+    
+    <div style="margin-bottom:10px;"><div class="input-group col-xs-7 <?php if(isset($_SESSION['itemPriceError'])){ echo "has-error"; }?>"><span class="input-group-addon">Price( KES)</span>
+    <input class="form-control" type="number" name="price" id="price" min="10" max="1000001" placeholder="Item Price In Kshs" <?php if(isset($_SESSION['PriceYouEntered'])){ echo'value="'.$_SESSION['PriceYouEntered'].'"'; } ?> required></div>
+    <?php if(isset($_SESSION['itemPriceError'])){?><div class="text-danger shida"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Price Error:</span><?php echo $_SESSION['itemPriceError'] ;?></div><?php }  ?> </div>
+    
+    <button type="submit" id="submitNewItem" name="submitNewItem" class="btn btn-success btn-lg btn-block" disabled>ADD THIS ITEM</button>
+    <?php if(isset($_SESSION['itemDescriptionError']) || (isset($_SESSION['ItemError']))|| ( isset( $_SESSION['itemPriceError']) ) || (isset( $_SESSION['itemBrandError'])) ){?><a  href="cancel_addnewitem.php" id="CancelNewItem" name="CancelNewItem" class="btn btn-warning btn-lg btn-block">CANCEL</a><?php }  ?>
+    </form>
 </div>
-<div class="row" style="margin-bottom:10px;">
-    <div id="refreshuploader">
-    <div class="col-xs-6 text-muted"> <div class="upload" id="uploaderdiv"> 
-            <form action="itemupload.php" method="post" enctype="multipart/form-data" id="upload" class="form-group upload">
-            <fieldset>
-            <legend class="lead text-muted">Upload Item Image</legend><span class="btn btn-default btn-file">Select Image <input type="file" id="file" name="file[]"> </span>
-            <input type="submit" id="submit" name="submit" class="btn btn-info" value="Upload" disabled>
-            </fieldset>
-            <div class="bar"><span class="bar-fill" id="pb">
-            <span class="bar-fill-text" id="pt"></span></span></div><div id="uploads" class="uploads">Uploaded file will appear here: </div></form></div></div>
-     </div>
-     <div class="col-xs-6"><div style="padding:5px; width:160px; height:160px" class="w3-card-4">
-            <div id="refreshimage"  style="width:150px; margin: 0 auto;"><img src="<?php if(isset($_SESSION['currentItemPic'])){ echo $_SESSION['currentItemPic']; } else{ echo "itemimages/defaultImage150.png";}?>" height="150" title="Uploaded Item Image will appear here"></div></div>
-     </div><?php if(isset($_SESSION['currentItemPic'])){
+<div class="col-sm-6">
+    <div style="margin-bottom:10px;">
+       <div id="refreshuploader">
+        <div class="upload" id="uploaderdiv"> 
+        <form action="itemupload.php" method="post" enctype="multipart/form-data" id="upload" class="form-group upload">
+        <fieldset>
+        <legend class="lead text-muted">Upload Item Image</legend><span class="btn btn-default btn-file">Select Image <input type="file" id="file" name="file[]" required> </span>
+        <input type="submit" id="submit" name="submit" class="btn btn-info" value="Upload" disabled>
+        </fieldset>
+        <div class="bar"><span class="bar-fill" id="pb">
+        <span class="bar-fill-text" id="pt"></span></span></div><div id="uploads" class="uploads">Uploaded file will appear here: </div></form></div>    
+        </div>   
+    </div> 
+    
+    <div style="margin-bottom:5px;">
+        <div style="padding:5px; width:200px; height:200px" class="w3-card-4">
+        <div id="refreshimage"  style="width:190px; margin: 0 auto;"><img src="<?php if(isset($_SESSION['currentItemPic'])){ echo $_SESSION['currentItemPic']; } else{ echo "itemimages/default1.png";}?>" height="190" title="Uploaded Item Image will appear here"></div></div> 
+    </div>                  
+   <?php if(isset($_SESSION['currentItemPic'])){
+       $_SESSION['ItemPicBackend'] = $_SESSION['currentItemPic'];  
  //LIFE IS LIKE A BEAUTIFUL MELODY. ONLY THE LYRICS ARE  MESSED UP.
-     unset($_SESSION['currentItemPic']);}?>
+     unset($_SESSION['currentItemPic']);}?>                   
+                
+    <button class="btn btn-default btn-lg btn-block" title="Reset Entered Data" onclick="resetFunction()"> RESET </button>
+                    
+                    
+                    
+                    
 </div>
-    <div class="row text-muted">
-            <div class="col-xs-6">
-            <button type="submit" id="submitNewItem" name="submitNewItem" class="btn btn-success btn-lg btn-block">ADD THIS ITEM</button>
-            </div>
-            <div class="col-xs-6">
-            <button class="btn btn-default btn-lg btn-block" title="Reset Entered Data" onclick="resetFunction()">RESET</button>
-            </div>
-    </div></form>
-</div>
-<div class="panel-footer text-center" style="color:#083B4C;"><small>&copy; Capital Investment Bank </small></div>
 </div></div>
+<div class="panel-footer text-center" style="color:#083B4C;"><small>&copy; Capital Investment Bank </small></div>
+</div>
+</div>
     <div class="col-sm-1"></div> </div>
         </div></div>
     
@@ -229,12 +318,12 @@ padding-top: 30px;
       <footer id="contact"class="text-center" style="height:200px; background-color:#333; color:white;">
         <div class="container">
        <div class="row" style="padding-top:10px;">
-        <div  class="col-sm-3"><img src="media/map25-redish.png" height="20" ><p>eHub House,</p> 
+        <div  class="col-sm-3"><img src="media/map25-redish.png" height="20" ><p>CIB House,</p> 
            <p>Muindi Mbingu Lane,</p>
             <p>Machakos,</p>
             <p>Kenya</p>
            </div>
-        <div  class="col-sm-3"><img src="media/envelope4-green.png" height="20" ><p>info@ehub.co.ke</p></div>  
+        <div  class="col-sm-3"><img src="media/envelope4-green.png" height="20" ><p>info@CIB.co.ke</p></div>  
         <div  class="col-sm-3"> <img src="media/telephone65-blue.png"  height="20" ><p><a href="tel://+254716715768"> +254716715768</a></p></div> 
            
         <div  class="col-sm-3" style="background-color:black;height:180px;">
@@ -244,7 +333,7 @@ padding-top: 30px;
                 <i class="fa fa-linkedIn" aria-hidden="true" style="font-size:15px; padding-left:10px;"></i>
             </p>
             
-      <p>&copy; <?php echo " ".date("Y"); ?> eHub</p>
+      <p>&copy; <?php echo " ".date("Y"); ?> CIB</p>
            <footer class="pull-right" style="padding-top:100px;">By &copy;Mickemlyn</footer>
            </div>
         </div>
@@ -252,6 +341,26 @@ padding-top: 30px;
       </footer>
 
     </div><!-- /.container -->
+<script>
+$(document).ready(function(){
+ $('#category').change(function(){
+  if($(this).val() != '')
+  {
+   var query = $(this).val();
+   var result = '';
+  
+   $.ajax({
+    url:"fetch_subcat.php",
+    method:"POST",
+    data:{ query:query},
+    success:function(data){
+     $('#subcategory').html(data);
+    }
+   })
+  }
+ });
+});
+</script>
 <script>
 $(document).ready(
     function(){
@@ -313,9 +422,43 @@ function resetFunction() {
 //    $("#uploaderdiv").load("additems.php #uploaderdiv" );
 }
 </script>
+<script>
+$("#itemDescription").on('keyup',function(){ 
+    var chars = (300 - ($(this).val().length) );
+$("#charsleft").text( chars);
+    
+});
+</script>
+<script>
+ $(document).ready (function(){ 
+     $("#successfade").hide().fadeIn('normal');
+   $("#successfade").fadeTo(4000, 500).slideUp("slow", function(){
+    $("#successfade").slideUp("slow");
+                });   
+            });
+
+</script>
+<script>
+ $("#itemName").on('keyup',function(){
+  var regEx = /^[a-zA-Z0-9\s-/()."]*$/; 
+ if(($(this).val().length > 5) && (regEx.test($(this).val())) && ($(this).val().trim().length >0) ){
+            $('#submitNewItem').attr('disabled', false); }           
+        else{
+            $('#submitNewItem').attr('disabled',true);}    
+});
+    </script>
+<script>
+ $("#brand").on('focus',function(){
+  var regEx = /^[a-zA-Z0-9\s-]*$/; 
+ if(($(this).val().length > 1) && (regEx.test($(this).val())) && ($(this).val().trim().length >0) ){
+            $('#submitNewItem').attr('disabled', false); }           
+        else{
+            $('#submitNewItem').attr('disabled',true);}    
+});
+    </script>
 </body>
 </html>
-<?php mysqli_close(conn); }
+<?php mysqli_close($conn); }
 else{
     unset($_SESSION['user']);
     unset($_SESSION['LAST_ACTIVITY']);

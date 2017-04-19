@@ -99,7 +99,7 @@ if (isset($_SESSION['user']) && (time() - $_SESSION['LAST_ACTIVITY'] < 900))
                <li class="dropdown">
                 <a href="#" class="dropdown">Store<span class="caret"></span> </a>
                <div class="dropdown-content">
-                <a href="#">View Store</a>
+                <a href="store.php">View Store</a>
                 <a href="additems.php">Add Items</a>
                <a href="#">Availability</a>
                <a href="categories.php">Categorization</a></div>  

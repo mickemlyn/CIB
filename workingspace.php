@@ -313,10 +313,7 @@ $("#title").focus(function() {
 });    
     
     $("#newpassword").on('keyup',function()
-    
-    
-    
-    
+
     $( "#confirmpassword" ).focusout(function() {
   if(($(this).val() == $("#newpassword").val() ) && $("#currentpassword").val().length !=0 ){
     $('#submitpassword').attr('disabled', false); } 
@@ -324,16 +321,77 @@ $("#title").focus(function() {
      $('#submitpassword').attr('disabled', true);   
     } 
   }).trigger( "focusout" );
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     </script>
+    
+    
+*******************************************************************
+ <form id="AddItemsForm" method="post" name="AddItemsForm" role="form" class="form-horizontal form-inline" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+<div class="row" style="margin-bottom:10px;">
+ <div class="col-xs-6">
+                 <div class="input-group col-xs-12 <?php if(isset($_SESSION['CurrentPassYouEntered'])){ echo "has-error"; }?>"><span class="input-group-addon">Item Name</span>
+                <input class="form-control" type="text" name="itemName" id="itemName" placeholder="Enter Item Name" <?php if(isset($_SESSION['CurrentPassYouEntered'])){ echo'value="'.$_SESSION['CurrentPassYouEntered'].'"'; } ?> required> </div>
+                <?php if(isset($_SESSION['CurrentPassYouEntered'])){?><div class="text-danger shida"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Item Name Error:</span><?php echo $_SESSION['passwordError'] ;?></div><?php }  ?>        </div>
+ <div class="col-xs-6">
+                <div class="input-group col-xs-7 <?php if(isset($_SESSION['CurrentPassYouEntered'])){ echo "has-error"; }?>"><span class="input-group-addon">Price( KES)</span>
+                <input class="form-control" type="number" name="price" id="price" min="10" max="1000001" placeholder="Item Price In Kshs" <?php if(isset($_SESSION['CurrentPassYouEntered'])){ echo'value="'.$_SESSION['CurrentPassYouEntered'].'"'; } ?> required></div>
+                <?php if(isset($_SESSION['CurrentPassYouEntered'])){?><div class="text-danger shida"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span class="sr-only">Price Error:</span><?php echo $_SESSION['passwordError'] ;?></div><?php }  ?>
+</div></div>
+ <div class="row" style="margin-bottom:6px;">
+    <div class="col-xs-6">
+                <div class="panel panel-default">
+                <textarea style="min-width: 100%" class="form-control" rows="4" name="itemDescription" id="itemDescription" maxlength="300" placeholder="Enter Detailed Item Description( Less than 300 characters)"><?php if(isset($_SESSION['BioYouEntered'])){ echo $_SESSION['BioYouEntered']; } ?></textarea>
+                <div class="panel-footer bg-success"> 
+                <div class="text-success"> <span id="charsleft"></span> Characters left</div>
+                </div></div>
+    </div>
+    <div class="col-xs-6">
+                <div class="input-group col-xs-10" style="margin-bottom:10px;"><span class="input-group-addon">Item Category</span>
+                <select class="form-control" id="category" name="category" >
+                <option selected disabled value="">Select Category</option>
+                <?php 
+                $sql="SELECT catid,cat FROM itemcategories ORDER BY cat ASC";
+                $row=mysqli_query($conn,$sql) or die (mysqli_error($conn));
+                while($data=mysqli_fetch_array($row)){
+                ?>
+                <option value="<?php echo $data["catid"]; ?>"><?php echo $data["cat"]; ?></option> <?php } ?>       
+
+                </select> </div>
+                
+                 <div class="input-group col-xs-10" style="margin-bottom:10px;"><span class="input-group-addon">Item SubCategory</span>
+                 <select class="form-control action" id="subcategory" name="subcategory" >
+                <option disabled selected value="">Select SubCategory</option>
+                
+                </select> </div> 
+                    
+                <div class="input-group col-xs-10 <?php if(isset($_SESSION['CurrentPassYouEntered'])){ echo "has-error"; }?>"><span class="input-group-addon">Model/Brand</span>
+                <input class="form-control" type="text" name="brand" id="brand" placeholder="Enter Item Brand or Model" <?php if(isset($_SESSION['CurrentPassYouEntered'])){ echo'value="'.$_SESSION['CurrentPassYouEntered'].'"'; } ?> required> </div>
+    </div>
+</div></form>
+<div class="row" style="margin-bottom:10px;">
+    <div id="refreshuploader">
+    <div class="col-xs-6 text-muted"> <div class="upload" id="uploaderdiv"> 
+            <form action="itemupload.php" method="post" enctype="multipart/form-data" id="upload" class="form-group upload">
+            <fieldset>
+            <legend class="lead text-muted">Upload Item Image</legend><span class="btn btn-default btn-file">Select Image <input type="file" id="file" name="file[]"> </span>
+            <input type="submit" id="submit" name="submit" class="btn btn-info" value="Upload" disabled>
+            </fieldset>
+            <div class="bar"><span class="bar-fill" id="pb">
+            <span class="bar-fill-text" id="pt"></span></span></div><div id="uploads" class="uploads">Uploaded file will appear here: </div></form></div></div>
+     </div>
+     <div class="col-xs-6"><div style="padding:5px; width:160px; height:160px" class="w3-card-4">
+            <div id="refreshimage"  style="width:150px; margin: 0 auto;"><img src="<?php if(isset($_SESSION['currentItemPic'])){ echo $_SESSION['currentItemPic']; } else{ echo "itemimages/default.png";}?>" height="150" title="Uploaded Item Image will appear here"></div></div>
+     </div><?php if(isset($_SESSION['currentItemPic'])){
+ //LIFE IS LIKE A BEAUTIFUL MELODY. ONLY THE LYRICS ARE  MESSED UP.
+     unset($_SESSION['currentItemPic']);}?>
+</div>
+    <div class="row text-muted">
+            <div class="col-xs-6">
+            <button type="submit" id="submitNewItem" name="submitNewItem" class="btn btn-success btn-lg btn-block">ADD THIS ITEM</button>
+            </div>
+            <div class="col-xs-6">
+            <button class="btn btn-default btn-lg btn-block" title="Reset Entered Data" onclick="resetFunction()">RESET</button>
+            </div>
+    </div>
+</div>
+   
+    
